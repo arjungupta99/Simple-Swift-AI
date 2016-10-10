@@ -12,14 +12,20 @@ import UIKit
 
 class NetworkA {
     
-    var learningRate        :Double  = 0.5
-    var layers              = [[NeuronA]]()
-    private var networkVC   :NetworkViewController?
+    var learningRate            :Double  = 0.5
+    var layers                  = [[NeuronA]]()
+    private var networkVC       :NetworkViewController?
+    private var persistUtil     :CoreDataUtil?
+    private var persistanceID   :String? = nil
     
     
-    init(rootVC:UIViewController? = nil) {
+    init(rootVC:UIViewController? = nil, persistanceID:String? = nil) {
         if let theRootVC = rootVC {
             self.networkVC = NetworkViewController.loadVC(rootVC:theRootVC)
+        }
+        if let _ = persistanceID {
+            self.persistanceID = persistanceID
+            self.persistUtil = CoreDataUtil()
         }
     }
     
@@ -35,22 +41,62 @@ class NetworkA {
     }
     
     
-    //Assign randomized weights to begin
+    //Assign weights to begin
     func connectNeuronsWithRandomizedWeights() {
+        
+        //Check persisted weights
+        var persistedWeights:[[[String:Double]]]?
+        if let thePersistantUtil = self.persistUtil {
+            
+            if let thePersistedWeights = thePersistantUtil.fetchExistingWeights(persistanceID:self.persistanceID!) {
+            
+                func checkLayerCompatibility() -> Bool {
+                    var compatible = true
+                    if (self.layers.count != thePersistedWeights.count) {
+                        compatible = false
+                    }
+                    else {
+                        for (layerIndex, layer) in self.layers.enumerated() {
+                            if layer.count != thePersistedWeights[layerIndex].count {
+                                compatible = false
+                                break
+                            }
+                        }
+                    }
+                    return compatible
+                }
+                
+                if (checkLayerCompatibility()) {
+                    DebugLog("Using persisted weights. Persistance ID : \(self.persistanceID)")
+                    persistedWeights = thePersistedWeights
+                }
+            }
+        }
         
         for (index,neuronLayer) in self.layers.enumerated() {
             
             if index == 0 { continue }
             
-            for neuron in neuronLayer {
+            for (nIndex,neuron) in neuronLayer.enumerated() {
                 var neuronInputs = [InputA]()
                 
-                //DebugLog("Random assigned weights for : \(neuron.identifier) -->")
                 
-                for (neuronIndex,prevNeuron) in self.layers[index-1].enumerated() {
-                    let randomWeight:Double = Double(arc4random_uniform(15) + 45) * 0.01
-                    let input = InputA(neuron: prevNeuron, weight: randomWeight)
-                    input.indexInLayer = neuronIndex
+                for (prevNeuronIndex,prevNeuron) in self.layers[index-1].enumerated() {
+                    
+                    var inputWt:Double?
+                    
+                    if let thePersistedWeights = persistedWeights {
+                        inputWt = thePersistedWeights[index][nIndex][prevNeuron.identifier]
+                    }
+                    
+                    if (inputWt == nil) {
+                        //DebugLog("Random assigned weights for : \(neuron.identifier) -->")
+                        let randomWeight:Double = Double(arc4random_uniform(15) + 45) * 0.01
+                        inputWt = randomWeight
+                    }
+                    
+                    let input = InputA(neuron: prevNeuron, weight: inputWt!)
+                    input.indexInLayer = prevNeuronIndex
                     //DebugLog("\(input.neuron?.identifier) : \(randomWeight)")
                     
                     neuronInputs.append(input)
@@ -208,6 +254,9 @@ class NetworkA {
             
             
             DispatchQueue.main.async {
+                
+                theSelf.persistUtil?.persistNewWeights(neurons: theSelf.layers, persistanceID: theSelf.persistanceID!)
+                
                 completionBlock!(true, 100.0)
             }
         }

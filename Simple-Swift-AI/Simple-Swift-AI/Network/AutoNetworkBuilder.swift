@@ -22,9 +22,9 @@ class AutoNetworkBuilder {
     
     var aNetwork:NetworkA?
     
-    func buildAutoNetwork(trainingSet:[(input:[Double],output:[Double])], rootVC:UIViewController? = nil) -> NetworkA {
+    func buildAutoNetwork(trainingSet:[(input:[Double],output:[Double])], rootVC:UIViewController? = nil, persistanceID:String? = nil) -> NetworkA {
         
-        let network             = NetworkA(rootVC:rootVC)
+        let network             = NetworkA(rootVC:rootVC, persistanceID:persistanceID)
         self.aNetwork           = network
         network.learningRate    = 0.5
         

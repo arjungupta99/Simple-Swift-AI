@@ -28,7 +28,7 @@ class AI_System_XOR {
             trainingSet.append(trainingSet[randomIndex])
         }
         
-        let network = AutoNetworkBuilder().buildAutoNetwork(trainingSet: trainingSet, rootVC: rootVC)
+        let network = AutoNetworkBuilder().buildAutoNetwork(trainingSet: trainingSet, rootVC: rootVC, persistanceID: "XOR")
         
         network.trainNetwork(trainingSets: trainingSet) { (completion) in
             

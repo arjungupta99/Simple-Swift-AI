@@ -24,6 +24,7 @@
 		67B9AFCA1D9F042B0058E2BA /* NeuronInputsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B9AFC61D9F042B0058E2BA /* NeuronInputsView.swift */; };
 		67B9AFCB1D9F042B0058E2BA /* OutputTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B9AFC71D9F042B0058E2BA /* OutputTableController.swift */; };
 		67B9AFCC1D9F042B0058E2BA /* OutputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B9AFC81D9F042B0058E2BA /* OutputTableViewCell.swift */; };
+		67B9AFEF1DA1EF410058E2BA /* CoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B9AFEE1DA1EF410058E2BA /* CoreDataUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		67B9AFC61D9F042B0058E2BA /* NeuronInputsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeuronInputsView.swift; sourceTree = "<group>"; };
 		67B9AFC71D9F042B0058E2BA /* OutputTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputTableController.swift; sourceTree = "<group>"; };
 		67B9AFC81D9F042B0058E2BA /* OutputTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputTableViewCell.swift; sourceTree = "<group>"; };
+		67B9AFEE1DA1EF410058E2BA /* CoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataUtil.swift; path = ../Utils/CoreDataUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				67B9AFC11D9F03DE0058E2BA /* Examples */,
 				67B9AFAC1D9F03990058E2BA /* Network */,
 				67B9AFC41D9F042B0058E2BA /* DebugView */,
+				67B9AFF01DA1FADF0058E2BA /* Persistance */,
 				67B9AFB71D9F03990058E2BA /* Utils */,
 				67B9AF9B1D9F030C0058E2BA /* Main.storyboard */,
 				67B9AFA11D9F030C0058E2BA /* Assets.xcassets */,
@@ -129,6 +132,15 @@
 				67B9AFC71D9F042B0058E2BA /* OutputTableController.swift */,
 				67B9AFC81D9F042B0058E2BA /* OutputTableViewCell.swift */,
 			);
+			path = DebugView;
+			sourceTree = "<group>";
+		};
+		67B9AFF01DA1FADF0058E2BA /* Persistance */ = {
+			isa = PBXGroup;
+			children = (
+				67B9AFEE1DA1EF410058E2BA /* CoreDataUtil.swift */,
+			);
+			name = Persistance;
 			path = DebugView;
 			sourceTree = "<group>";
 		};
@@ -205,6 +217,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67B9AFEF1DA1EF410058E2BA /* CoreDataUtil.swift in Sources */,
 				67B9AFBD1D9F03990058E2BA /* NeuronA.swift in Sources */,
 				67B9AF9A1D9F030C0058E2BA /* ViewController.swift in Sources */,
 				67B9AFC91D9F042B0058E2BA /* NetworkViewController.swift in Sources */,
