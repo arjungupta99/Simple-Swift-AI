@@ -33,3 +33,5 @@ An example of XOR gate training is included.
 By Arjun Gupta
 
 Can be reached at : arjungupta497 (at) gmail.com
+
+Twitter : https://www.twitter.com/arjunguptaxor
