@@ -89,7 +89,7 @@ class OutputTableController:UITableViewController {
                 
                 let fo = CGRect(x: self.labelSideMargin, y: self.labelTopMargin + CGFloat(i) * self.labelHeight, width: labelWidth, height: self.labelHeight)
                 let olbl = self.makeLabel(f: fo)
-                olbl.textAlignment = .right
+                olbl.textAlignment = .left
                 cell.outputLabelView.addSubview(olbl)
                 cell.outputLabels.append(olbl)
                 
@@ -123,7 +123,9 @@ class OutputTableController:UITableViewController {
             
             //Output label
             let olbl = cell.outputLabels[i]
-            let outputVal = String(describing: self.outputs[indexPath.row][i])
+            
+            let outputValue = self.outputs[indexPath.row][i]
+            let outputVal   = String(format:"%f", outputValue)
             olbl.text = outputVal
             
             //Output neuron label
