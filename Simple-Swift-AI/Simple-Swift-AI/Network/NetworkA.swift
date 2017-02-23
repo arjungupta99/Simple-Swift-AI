@@ -187,32 +187,34 @@ class NetworkA {
                     for (neuronIndex, aNeuron) in alayer.enumerated() {
                         
                         var newInputWeights = [(String,Double)]()
+                        
+                        var deltaO:Double = 0
+                        if (i == theSelf.layers.count - 1) { //Output layer
+                            let targetOutput            = ioSet.output[neuronIndex]
+                            let deltaErrorByNet         = -(targetOutput - aNeuron.output!) * aNeuron.output! * (1 - aNeuron.output!)
+                            aLayerErrorOByNetO[aNeuron] = deltaErrorByNet
+                            deltaO                      = deltaErrorByNet
+                        }
+                        else {
+                            var deltaErrorOByNetO:Double      = 0
+                            let theLayerSigmaOutputs    = layersErrorOByNetO[currentLayerCount - 1]
+                            for outputNeuron in theLayerSigmaOutputs.keys {
+                                
+                                let connectedInput = outputNeuron.inputs[aNeuron.identifier]!
+                                deltaErrorOByNetO += theLayerSigmaOutputs[outputNeuron]! * connectedInput.weight
+                                
+                            }
+                            
+                            //Store this in an array for use in deeper layers
+                            aLayerErrorOByNetO[aNeuron] = deltaErrorOByNetO
+                            
+                            deltaErrorOByNetO           = deltaErrorOByNetO * aNeuron.output!*(1 - aNeuron.output!)
+                            
+                            deltaO                      = deltaErrorOByNetO
+                        }
+                        
                         for input in aNeuron.inputs.values {
                             
-                            var deltaO:Double = 0
-                            if (i == theSelf.layers.count - 1) { //Output layer
-                                let targetOutput            = ioSet.output[neuronIndex]
-                                let deltaErrorByNet         = -(targetOutput - aNeuron.output!) * aNeuron.output! * (1 - aNeuron.output!)
-                                aLayerErrorOByNetO[aNeuron] = deltaErrorByNet
-                                deltaO                      = deltaErrorByNet
-                            }
-                            else {
-                                var deltaErrorOByNetO:Double      = 0
-                                let theLayerSigmaOutputs    = layersErrorOByNetO[currentLayerCount - 1]
-                                for outputNeuron in theLayerSigmaOutputs.keys {
-                                    
-                                    let connectedInput = outputNeuron.inputs[aNeuron.identifier]!
-                                    deltaErrorOByNetO += theLayerSigmaOutputs[outputNeuron]! * connectedInput.weight
-                                    
-                                }
-                                
-                                //Store this in an array for use in deeper layers
-                                aLayerErrorOByNetO[aNeuron] = deltaErrorOByNetO
-                                
-                                deltaErrorOByNetO           = deltaErrorOByNetO * aNeuron.output!*(1 - aNeuron.output!)
-                                
-                                deltaO                      = deltaErrorOByNetO
-                            }
                             
                             let dTotalError_by_dOutputWeight = deltaO * input.value!
                             
